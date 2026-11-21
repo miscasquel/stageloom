@@ -1,4 +1,4 @@
-# 0004 — Handoffs removed; this plan replaces them
+# 0004 - Handoffs removed; this plan replaces them
 
 **Status:** Accepted, 2026-10-10 (D4)
 

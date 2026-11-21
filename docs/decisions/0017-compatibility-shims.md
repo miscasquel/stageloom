@@ -1,4 +1,4 @@
-# 0017 — Compatibility shims and their removal versions
+# 0017 - Compatibility shims and their removal versions
 
 **Status:** Accepted, 2026-11-16 (0.8.0 T2)
 
@@ -38,13 +38,13 @@ are part of the present identity/continuity contract.
 These had no owner, no external consumer and no old persisted form. They were
 removed rather than inventoried:
 
-- `GhLink.PublishStage` — tests now call `PublishStageOut`.
-- `GhLink.SetSlotStatus` — tests now call `SetOutStatus`.
+- `GhLink.PublishStage` - tests now call `PublishStageOut`.
+- `GhLink.SetSlotStatus` - tests now call `SetOutStatus`.
 - `Instances.Emit` text-only warning overloads and the non-capability
-  convenience overload only they used — callers use the rich `WireWarning`,
+  convenience overload only they used - callers use the rich `WireWarning`,
   capability-aware overload.
 - `Conversion` text-only warning overloads (`SectionsFromCurves`,
-  `SubDFromSections`, `SectionsFromSubD`, `SectionsFromGeometry`) — the live
+  `SubDFromSections`, `SectionsFromSubD`, `SectionsFromGeometry`) - the live
   Rhino check now builds the same `List<WireWarning>` the product uses.
 
 ## Consequences

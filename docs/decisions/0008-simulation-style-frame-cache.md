@@ -1,4 +1,4 @@
-# 0008 — Simulation-style frame cache, no bake operator
+# 0008 - Simulation-style frame cache, no bake operator
 
 **Status:** Superseded by
 [0016](0016-live-only-stages.md), 2026-11-16: the custom frame cache is removed
@@ -35,7 +35,7 @@ substance lives in this ADR and in the polish plan's P4 items).
   current definition fingerprint (protocol version + schema signature). The
   document name is deliberately not in the fingerprint so offline replay works;
   a document change is caught by the generation bump on `hello`.
-- **Reconnect and reload keep frames when the fingerprint matches** — the
+- **Reconnect and reload keep frames when the fingerprint matches** - the
   handoff's open question 2, answered yes: reopening a `.blend` reuses the disk
   cache and deletes only what mismatches.
 - **Playback never blocks in Frame Drop.** Uncached frames keep the last good

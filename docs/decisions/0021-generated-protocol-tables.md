@@ -1,4 +1,4 @@
-# 0021 — One source for the protocol tables, generated outputs and drift checks
+# 0021 - One source for the protocol tables, generated outputs and drift checks
 
 **Status:** Accepted, 2026-11-18 (0.8.0 T9b).
 

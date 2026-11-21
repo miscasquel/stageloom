@@ -1,4 +1,4 @@
-# 0012 — Bake data is irreversible; Clear Bake confirms
+# 0012 - Bake data is irreversible; Clear Bake confirms
 
 **Status:** Accepted, 2026-11-14.
 

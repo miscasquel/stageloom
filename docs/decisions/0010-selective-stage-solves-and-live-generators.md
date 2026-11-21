@@ -1,4 +1,4 @@
-# 0010 — Selective stage solves and live generator stages
+# 0010 - Selective stage solves and live generator stages
 
 **Status:** Proposed, 2026-11-12. The live Rhino/Grasshopper acceptance run is
 still pending; this record is promoted to Accepted when the reference file

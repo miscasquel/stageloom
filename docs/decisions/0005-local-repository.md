@@ -1,4 +1,4 @@
-# 0005 — Repository on the local disk
+# 0005 - Repository on the local disk
 
 **Status:** Accepted, 2026-10-10 (D5)
 

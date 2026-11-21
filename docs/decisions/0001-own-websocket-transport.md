@@ -1,4 +1,4 @@
-# 0001 — Own WebSocket protocol; Portal stays separate
+# 0001 - Own WebSocket protocol; Portal stays separate
 
 **Status:** Accepted, 2026-10-10 (D1)
 

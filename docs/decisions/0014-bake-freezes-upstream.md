@@ -1,4 +1,4 @@
-# 0014 — Bake stage freezes its upstream chain
+# 0014 - Bake stage freezes its upstream chain
 
 **Status:** Accepted, 2026-11-15. Live Rhino acceptance recorded in
 `benchmarks/results/2026-11-15-live-chain-bake.md`. Amended by

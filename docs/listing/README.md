@@ -1,10 +1,9 @@
 # Listing assets
 
 **Status:** the platform upload is deferred; these assets are retained for a
-later upload.
-
-Assets for the extensions.blender.org listing. The icon is a first pass; replace
-it if the brand direction changes.
+later upload. The listing copy itself lives in
+[description.md](description.md); the shot list below is the same one it
+refers to.
 
 ## Icon
 

@@ -1,4 +1,4 @@
-# 0019 — Keep C# 5/Mono through 1.0; .NET spike no-go
+# 0019 - Keep C# 5/Mono through 1.0; .NET spike no-go
 
 **Status:** Accepted, 2026-11-18 (0.8.0 T9c). Closes the
 `net48`/`net7.0-windows` spike in

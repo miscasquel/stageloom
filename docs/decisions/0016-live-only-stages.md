@@ -1,4 +1,4 @@
-# 0016 — Live-only stages; native bake is the offline path
+# 0016 - Live-only stages; native bake is the offline path
 
 **Status:** Accepted, 2026-11-16. Supersedes
 [0008](0008-simulation-style-frame-cache.md) and amends

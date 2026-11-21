@@ -1,4 +1,4 @@
-# 0006 — Carried decisions
+# 0006 - Carried decisions
 
 **Status:** Accepted, 2026-10-10. Data-root scope amended by
 [0016](0016-live-only-stages.md), 2026-11-16: the custom frame cache is gone.

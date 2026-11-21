@@ -46,7 +46,7 @@ of 5 metres in a millimetre document must become a translation of 5000. This is
 the part Blender cannot test, because Blender has no document unit system.
 
 **Result, 2026-11-14:** the first run found `ReadRows` returning 5 for a
-millimetre scale — the placement translation had never been converted. The row
+millimetre scale - the placement translation had never been converted. The row
 reader and writer now scale the translation only (the linear part is
 dimensionless), and the full matrix passes. The shared `TransformFromWire` /
 `TransformToWire` helpers are covered headlessly in `ComponentTests`; `Emit`

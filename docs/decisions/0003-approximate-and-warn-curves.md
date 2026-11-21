@@ -1,4 +1,4 @@
-# 0003 — Approximate and warn for curves that cannot be exact
+# 0003 - Approximate and warn for curves that cannot be exact
 
 **Status:** Accepted, 2026-10-10 (D3)
 

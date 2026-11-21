@@ -1,4 +1,4 @@
-# 0007 — Published on GitHub
+# 0007 - Published on GitHub
 
 **Status:** Accepted, 2026-10-12
 

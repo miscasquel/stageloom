@@ -2,45 +2,38 @@
 
 Drive Grasshopper definitions from Blender as stackable modifiers, next to
 native Geometry Nodes modifiers, in one visible object per stack. Geometry and
-parameters can flow through the stack, so parameters can be keyframed, driven,
-and played back.
+parameters flow through the stack, so parameters can be keyframed, driven, and
+played back.
 
-That is the v1 goal. **v0.8.1 is the current release**: geometry (meshes,
-curves, points, SubD cages) driven by a real Grasshopper definition, with named
-attributes and Grasshopper blocks (instances, including nested and multi-part
-definitions) travelling both ways, parameters you can edit and keyframe in
-Blender, packaged as a Blender extension. 0.8.0 was the architecture, speed and
-truth release: the modules behind that feature set have one owner each, the
-performance gate is measured against a stored p50/p95 baseline, and the
-extension zip and `.gha` are reproducible from one version source. 0.8.1 is a
-patch on top of it: it fixes a **Clear Bake** crash after a stack object was
-deleted, with no protocol, fixture or `.blend` change. Native Windows/Rhino
-acceptance remains deferred, and neither 0.8.0 nor this patch makes a
-native-parity claim.
-[DEMO.md](DEMO.md) walks through the loop.
+[![Release](https://img.shields.io/github/v/release/miscasquel/stageloom)](https://github.com/miscasquel/stageloom/releases/latest)
+[![Licence](https://img.shields.io/github/license/miscasquel/stageloom)](LICENSE)
+[![Tests](https://github.com/miscasquel/stageloom/actions/workflows/tests.yml/badge.svg)](https://github.com/miscasquel/stageloom/actions/workflows/tests.yml)
 
-**0.8.1 release (2026-11-19).** The patch fix commits `b923398` (print
-Blender's native crash log from the headless runner) and `e2cafed` (snapshot
-bake-token matches before unfreezing, so Clear Bake survives a deleted stack
-object; write the fake-GH report atomically) are in this release, and CI is
-green on them for three consecutive runs. The release tree passed
-`scripts/check-all` **26/26 in 184.6 s** alone with the 2026-11-17 baseline
-enforced (not rebuilt); the worst positive delta was +3.31% p50 and +3.41% p95,
-with no metric above +5%. The artifacts are `dist/stageloom-0.8.1.zip`
-(SHA-256 `8cf1e570…`) and `grasshopper/build/out/Stageloom.gha` (SHA-256
-`f19aa183…`); both reproduce byte-for-byte, the extension was installed and
-enabled with its round trip passing, and `scripts/check-deployed` reports the
-deployed plugin current. Release:
-[v0.8.1](https://github.com/miscasquel/gh-blender-stack/releases/tag/v0.8.1).
+<!-- Hero image. Drop docs/assets/hero.png in the repository and uncomment.
+<img src="docs/assets/hero.png" alt="A Blender object driven by a Grasshopper definition, shown as a Stageloom stage in its modifier stack" width="100%">
+-->
 
 ```
-Blender                                          Rhino / Grasshopper (wine)
+Blender                                          Rhino 8 / Grasshopper
 ┌───────────────────────────┐      WebSocket     ┌─────────────────────────────────┐
 │ Cube                      │◄──────────────────►│ Stage In ──► Scale ──► Stage Out│
 │ Stageloom · Demo (stage)  │       59130        │                 ▲               │
 │   Bevel (native, optional)│                    │               Param             │
 └───────────────────────────┘                    └─────────────────────────────────┘
 ```
+
+**0.8.1 is the current release.** It carries the full v1 feature scope:
+meshes, curves, point clouds, SubD cages and Brep outputs (meshed, warned)
+driven by a real Grasshopper definition; named attributes and Grasshopper
+blocks (instances, including nested and multi-part definitions) travelling
+both ways; parameters you can edit and keyframe in Blender; packaged as a
+Blender extension plus a Grasshopper plugin. 0.8.0 was the architecture, speed
+and truth release: the modules behind the feature set have one owner each, the
+performance gate is measured against a stored p50/p95 baseline, and the
+extension zip and `.gha` are reproducible from one version source. 0.8.1 is a
+patch on top of it: it fixes a **Clear Bake** crash after a stack object was
+deleted, with no protocol, fixture or `.blend` change.
+[DEMO.md](DEMO.md) walks through the loop.
 
 ## What works today
 
@@ -58,7 +51,7 @@ Blender                                          Rhino / Grasshopper (wine)
 - **Geometry kinds.** Meshes (n-gons and vertex colours), curves (poly, Bezier,
   NURBS, circles, ellipses, arcs), point clouds, SubD control cages with
   edge-crease tags, and Breps/surfaces (meshed on the way out, lossy). Stage In
-  delivers everything through one generic `Geometry` output — mesh, SubD cage,
+  delivers everything through one generic `Geometry` output - mesh, SubD cage,
   curves, point cloud, in that order; Stage Out takes any of them on one generic
   input. A Blender surface object cannot hold a stage (it cannot
   take a Geometry Nodes modifier), so convert it to a mesh first. A wire mesh
@@ -67,7 +60,7 @@ Blender                                          Rhino / Grasshopper (wine)
   so EDGE attributes stay one-per-curve and POINT attributes stay lists per
   curve; you do not need a `Mesh to Curve` node.
 - **Attributes.** Blender's named attributes (floats, ints, booleans, strings,
-  vectors, colours, quaternions, matrices — every type, on every mesh domain)
+  vectors, colours, quaternions, matrices - every type, on every mesh domain)
   travel with the geometry: Stage In attaches them to the Rhino geometry and
   lists their names on its `Attributes` output, Stage Out sends back what the
   graph attached. **Attribute Get** and **Attribute Set** read and write them in
@@ -76,8 +69,8 @@ Blender                                          Rhino / Grasshopper (wine)
 - **Blocks (instances).** Blender's instanced geometry crosses as Grasshopper
   block definitions and instances, built graph-side with no document write;
   nested and multi-part blocks work both ways. On the Blender side each
-  definition is drawn through `Instance on Points` — nested placements are true
-  instances, one per placement — and all of the helper data lives in a
+  definition is drawn through `Instance on Points` - nested placements are true
+  instances, one per placement - and all of the helper data lives in a
   dedicated `Stageloom Stage` scene, so your own scene and outliner stay clean.
 - **Parameters.** `Param` components declare float, int, bool, vector3, colour,
   value list, and text parameters. Blender draws them in the N-panel with
@@ -116,30 +109,77 @@ Blender                                          Rhino / Grasshopper (wine)
   baked in turn. Clear Bake deletes only this stage's bake and unfreezes the
   stages this bake froze (upstream or downstream); another stage's bake and a
   manual freeze are untouched. A packed bake is kept when the `.blend` is saved.
-- **Tests.** `scripts/check-all` is the local gate: docs, protocol-table drift,
-  core, Blender headless (plus the offline gate), benchmarks, the installed
-  extension round trip, the reproducible-zip and `.gha` checks and the C#
-  suites, with per-step timing. The current tree is checked by 133 core tests,
-  **472** Blender headless tests, fourteen golden fixtures and the C# suites
-  (689 passing checks across the codec fixture runner and eight console suites,
-  plus a fixed-seed 10,000-case frame fuzz; the native Rhino halves skip under
-  wine). The Blender headless suite also runs deterministic randomized
-  geometry, attribute, instance and bake-marker round trips, and the 200-stage,
-  100k-triangle and 10k-instance scale shapes. The dedicated scale run
-  (`scripts/scale`) records their timings and peak RSS, and the dedicated soak
-  (`scripts/soak`) ran 10,238 churn cycles in 3,600 s with 0 invariant
-  failures, 30/30 native bakes and 15 reconnects; both are local/release
-  checks, not part of `scripts/check-all`.
-  `scripts/check-protocol-tables` (generated tables and fixture inventory),
-  `scripts/test-core` (standard library only),
-  `scripts/test-blender` (Blender headless against `tools/fake_gh`),
-  `scripts/test-gha` (the C# codec against the golden fixtures, the 10,000-case
-  frame fuzz, plus the conversion, attribute, instance, transport, link,
-  component and stage suites, under wine), `scripts/test-extension` (installed
-  extension round trip), `scripts/test-reproducible` (two-build extension zip
-  comparison) and
-  `scripts/test-reproducible-gha` (two-build plus copied-tree `.gha`
-  comparison) are its steps.
+
+<!-- Screenshots. Drop these files in the repository and uncomment.
+<img src="docs/listing/screenshot-1.png" alt="Blender viewport with the Stageloom panel, an ok stage and its parameters" width="49%">
+<img src="docs/listing/screenshot-2.png" alt="The Grasshopper canvas: Stage In feeding a definition feeding Stage Out and Param" width="49%">
+<img src="docs/listing/screenshot-3.png" alt="The fake_gh stand-in connected to the Stageloom panel, no Rhino needed" width="49%">
+-->
+
+## Install
+
+Download both artifacts from the
+[v0.8.1 release](https://github.com/miscasquel/stageloom/releases/tag/v0.8.1).
+
+**1. Blender 5.2 or newer**
+
+1. Download `stageloom-0.8.1.zip`.
+2. In Blender, open Preferences > Add-ons and press **Install from Disk**
+   (the arrow at the top right), then pick the zip and enable **Stageloom**.
+3. Turn **Online Access** on in Preferences > System. The add-on listens on
+   localhost, so Blender requires it; with it off the panel says so and nothing
+   listens.
+
+**2. Rhino 8 with Grasshopper**
+
+1. Download `Stageloom.gha`.
+2. Copy it into your Grasshopper `Libraries` folder
+   (`%APPDATA%\Grasshopper\Libraries` on Windows).
+3. Restart Rhino. Grasshopper scans that folder only at startup, so the plugin
+   is not live until the restart has happened.
+
+**3. Connect**
+
+The Blender server listens on `ws://127.0.0.1:59130/` by default (Stageloom
+preferences). In Grasshopper, a **Stageloom Connection** component saves the
+port for the whole installation, so Stage In and Stage Out find it on their
+own. Then follow [DEMO.md](DEMO.md): one Stage In, one Stage Out, one Param,
+and the stage key pasted into their Key inputs.
+
+### Reviewer quick start (no Rhino)
+
+Without Rhino the Blender half still runs and is inspectable: install the
+add-on, add a stage, then answer the loop with the bundled stand-in.
+
+1. Install the extension zip and enable **Stageloom**.
+2. Enable **Online Access** in Preferences > System.
+3. Select an object, open the **Stageloom** sidebar tab and press **Add Stage**.
+   The stage reports `disconnected` until something connects.
+4. Run the stand-in with the stage key from the panel:
+
+   ```
+   python3 tools/fake_gh/fake_gh.py --stage <stage key>
+   ```
+
+   It connects like the plugin, echoes the geometry back, and the stage reports
+   `ok`. `--report <path>` writes what it received and sent to JSON.
+
+The add-on's logs live in its per-user extension data directory by default; the
+**Data root** preference in the add-on settings overrides it.
+
+## Requirements
+
+- Blender 5.2 or newer; 1.0 targets Blender 5.3 (Python 3.13). The add-on
+  declares the `network` permission - it listens on localhost - so Blender's
+  **Online Access** must be on
+  (Preferences > System); with it off the panel says so and nothing listens.
+- **Rhino 8 with Grasshopper** to run real definitions. Stageloom has been used
+  natively on Windows 11 with Rhino 8 by the maintainer and an external user;
+  the project's own build and test environment runs Rhino under wine on Linux,
+  so the recorded acceptance matrix remains the Linux/wine one and 0.8.1 makes
+  no formal native-parity claim. macOS needs testing.
+- The Grasshopper half is built from this same repository (`grasshopper/`,
+  GPL-3.0-or-later), so no closed component is required.
 
 ## What is deliberately not here yet
 
@@ -160,95 +200,6 @@ Blender                                          Rhino / Grasshopper (wine)
   stage, Clear Bake, Key all and Purge orphans are in the Stageloom panel.
 
 The authoritative roadmap and scope are in [docs/plan.md](docs/plan.md).
-
-## Requirements
-
-- Blender 5.2 or newer; 1.0 targets Blender 5.3 (Python 3.13). The add-on
-  declares the `network` permission — it listens on localhost — so Blender's
-  **Online Access** must be on
-  (Preferences > System); with it off the panel says so and nothing listens.
-- **Rhino 8 with Grasshopper** to run real definitions, under wine or Windows
-  (mac needs testing). Development and testing happen on one Linux machine; the
-  build scripts assume `~/.local/share/wine-rhino` and a `rhino8` wine prefix,
-  both overridable with the `WINE` and `WINEPREFIX` environment variables.
-  Mono's `csc.exe` (ships with wine) builds the C# 5 plugin; a
-  `net48`/`net7.0-windows` migration is a recorded no-go through 1.0
-  ([ADR 0019](docs/decisions/0019-keep-csharp5-mono.md)), revisited only after
-  native Windows/Rhino acceptance. **Native Windows/Rhino acceptance remains
-  deferred**; 0.8.1 makes no native-parity claim and
-  the C# suite remains a local gate (a stock CI runner has neither wine with
-  Mono's `csc` nor Rhino 8's managed assemblies).
-
-The Grasshopper half is built from this same repository (`grasshopper/`,
-GPL-3.0-or-later), so no closed component is required. **Without Rhino** the
-Blender half still runs and is inspectable: install the add-on, add a stage,
-then answer the loop with the bundled stand-in —
-
-```
-python3 tools/fake_gh/fake_gh.py --stage <stage key from the panel>
-```
-
-It connects like the plugin, echoes the geometry back, and (with `--report`)
-writes what it received and sent to a JSON file. `scripts/test-blender` drives
-the same tool across the whole engine surface.
-
-### Reviewer quick start (no Rhino)
-
-1. Install the extension zip and enable **Stageloom**.
-2. Enable **Online Access** in Preferences > System.
-3. Select an object, open the **Stageloom** sidebar tab and press **Add Stage**.
-   The stage reports `disconnected` until something connects.
-4. Run the stand-in with the stage key from the panel:
-
-   ```
-   python3 tools/fake_gh/fake_gh.py --stage <stage key>
-   ```
-
-   It connects like the plugin, echoes the geometry back, and the stage reports
-   `ok`. `--report <path>` writes what it received and sent to JSON.
-
-The add-on's logs live in its per-user extension data directory by default; the
-**Data root** preference in the add-on settings overrides it.
-
-## Install
-
-Download the add-on zip and the Grasshopper `.gha` from the
-[v0.8.1 release](https://github.com/miscasquel/gh-blender-stack/releases/tag/v0.8.1).
-The commands below are the build path.
-
-Release path: the add-on ships as a Blender extension with the official
-pure-Python `websockets` wheel. `blender_manifest.toml` is the only version
-source (`scripts/version` prints it), and the build normalizes the zip
-(sorted entries, fixed `1980-01-01` timestamps and modes), validates the
-rewritten artifact and prints/writes its SHA-256. `scripts/test-reproducible`
-builds twice and asserts the fixed metadata as well as comparing bytes.
-`grasshopper/build/build-gha.sh` passes Mono `csc` `/deterministic`; two builds
-in the tree and one from a copy at a different absolute path are byte-identical
-(same toolchain and tree; no `/pathmap` is needed because the build emits no
-debug info). `scripts/test-reproducible-gha` checks that locally.
-
-```
-scripts/build-extension          # builds dist/stageloom-<version>.zip
-scripts/install-extension        # installs and enables it in Blender
-
-grasshopper/build/build-gha.sh   # build Stageloom.gha (Rhino 8)
-grasshopper/deploy/deploy.sh --dry-run  # print the resolved wine user and path
-grasshopper/deploy/deploy.sh     # copy it into the Grasshopper Libraries
-```
-
-`scripts/check-deployed` says whether the copy Grasshopper will load is the one
-you last built. A `.gha` is scanned only when Rhino starts, so a build is not
-live until the copy *and* the restart have both happened; `scripts/test-gha`
-prints the same warning when the deployed plugin is stale. `deploy.sh` finds
-the Windows user under the prefix; if the prefix has more than one, set
-`STAGELOOM_WINE_USER` to the Rhino 8 user.
-
-Development path: `scripts/install-addon` symlinks the working tree into
-Blender's user scripts and unpacks the same declared `websockets` wheel beside
-it. Both installs appear as **Stageloom** in Preferences > Add-ons.
-
-Then follow [DEMO.md](DEMO.md). The server listens on port 59130 (configurable in
-the add-on preferences).
 
 ## Endpoint
 
@@ -303,9 +254,44 @@ scripts/code-health      # regenerate docs/code-health.md (not a gate)
 python3 scripts/make-fixtures   # regenerate protocol/fixtures after a protocol change
 ```
 
-CI runs the core layer on Python 3.13 and 3.14, including the protocol-table and
-fixture-inventory drift check; the 3.13 leg also enforces the 90% core coverage
-floor. A second job installs Blender
+## Tests
+
+`scripts/check-all` is the local gate: docs, protocol-table drift, core,
+Blender headless (plus the offline gate), benchmarks, the installed extension
+round trip, the reproducible-zip and `.gha` checks and the C# suites, with
+per-step timing. The current tree is checked by 133 core tests, **472** Blender
+headless tests, fourteen golden fixtures and the C# suites (689 passing checks
+across the codec fixture runner and eight console suites, plus a fixed-seed
+10,000-case frame fuzz; the native Rhino halves skip under wine). The Blender
+headless suite also runs deterministic randomized geometry, attribute, instance
+and bake-marker round trips, and the 200-stage, 100k-triangle and 10k-instance
+scale shapes. The dedicated scale run (`scripts/scale`) records their timings
+and peak RSS, and the dedicated soak (`scripts/soak`) ran 10,238 churn cycles in
+3,600 s with 0 invariant failures, 30/30 native bakes and 15 reconnects; both
+are local/release checks, not part of `scripts/check-all`.
+`scripts/check-protocol-tables` (generated tables and fixture inventory),
+`scripts/test-core` (standard library only),
+`scripts/test-blender` (Blender headless against `tools/fake_gh`),
+`scripts/test-gha` (the C# codec against the golden fixtures, the 10,000-case
+frame fuzz, plus the conversion, attribute, instance, transport, link,
+component and stage suites, under wine), `scripts/test-extension` (installed
+extension round trip), `scripts/test-reproducible` (two-build extension zip
+comparison) and
+`scripts/test-reproducible-gha` (two-build plus copied-tree `.gha`
+comparison) are its steps.
+
+Coverage floors: core **93.50%** (90% floor), engine/geometry **89.46%** (80%)
+and pure C# core **93.36%** (80%, with the two RhinoCommon files named as
+exclusions). The 200-stage/100k-triangle/10k-instance scale run passes 38/38
+structural checks in 4.58 s with a 524.0 MiB peak RSS, and the one-hour soak
+completed 10,238 churn cycles with 0 invariant failures and a clean teardown
+([plan.md](docs/plan.md) records both runs).
+
+## CI
+
+CI runs the core layer on Python 3.13 and 3.14, including the protocol-table
+and fixture-inventory drift check; the 3.13 leg also enforces the 90% core
+coverage floor. A second job installs Blender
 5.3 on Ubuntu and runs `scripts/check-all --ci`: docs, protocol-table drift,
 ruff, core, Blender headless with the offline gate, the installed-extension
 round trip, the baseline-gate self-test and the two-build extension-zip
@@ -315,16 +301,75 @@ measured locally at 93.36% (80% floor, RhinoCommon files named as exclusions).
 The timing benchmark is **not** run in CI: the stored 2026-11-17 best-of-three
 baseline is reference-machine-specific, so `scripts/bench-baseline` is a
 local/release check and CI makes no performance claim. That job names and skips
-the C# and `.gha` reproduction steps because a stock runner has no
-wine/wine-mono and no Rhino 8 managed assemblies; the C# suite and
+the C# and `.gha` reproduction steps because a stock runner has neither wine with
+Mono's `csc` nor Rhino 8's managed assemblies; the C# suite and
 `scripts/test-reproducible-gha` are local gates (C# 5/Mono,
 [ADR 0019](docs/decisions/0019-keep-csharp5-mono.md)). No stock-runner codec job
 is claimed. The 1-hour soak and the scale run are local/release checks, not CI
-jobs. Native Windows/Rhino acceptance remains deferred.
+jobs.
+
+## Development
+
+The release path builds from this tree; the development path symlinks it into
+Blender instead.
+
+```
+scripts/build-extension          # builds dist/stageloom-<version>.zip
+scripts/install-extension        # installs and enables it in Blender
+
+grasshopper/build/build-gha.sh   # build Stageloom.gha (Rhino 8)
+grasshopper/deploy/deploy.sh --dry-run  # print the resolved wine user and path
+grasshopper/deploy/deploy.sh     # copy it into the Grasshopper Libraries
+```
+
+- **Version source.** `blender_manifest.toml` is the only version literal
+  (`scripts/version` prints it), and the build, install and test scripts read
+  it through `scripts/version`; `scripts/check-docs` keeps the C# hello string
+  and the protocol example in sync.
+- **Reproducible artifacts.** The build normalizes the zip (sorted entries,
+  fixed `1980-01-01` timestamps and modes), validates the rewritten artifact and
+  prints/writes its SHA-256; `scripts/test-reproducible` builds twice and
+  asserts the fixed metadata as well as comparing bytes.
+  `grasshopper/build/build-gha.sh` passes Mono `csc` `/deterministic`; two
+  builds in the tree and one from a copy at a different absolute path are
+  byte-identical, checked by `scripts/test-reproducible-gha`.
+- **Deploy.** `deploy.sh` finds the Windows user under the wine prefix; if the
+  prefix has more than one, set `STAGELOOM_WINE_USER` to the Rhino 8 user.
+  `scripts/check-deployed` says whether the copy Grasshopper will load is the
+  one you last built. A `.gha` is scanned only when Rhino starts, so a build is
+  not live until the copy *and* the restart have both happened.
+- **Development install.** `scripts/install-addon` symlinks the working tree
+  into Blender's user scripts and unpacks the same declared `websockets` wheel
+  beside it. Both installs appear as **Stageloom** in Preferences > Add-ons.
+- **Environment.** Development and testing happen on one Linux machine; the
+  build scripts assume `~/.local/share/wine-rhino` and a `rhino8` wine prefix,
+  both overridable with the `WINE` and `WINEPREFIX` environment variables.
+  Mono's `csc.exe` (ships with wine) builds the C# 5 plugin; a
+  `net48`/`net7.0-windows` migration is a recorded no-go through 1.0
+  ([ADR 0019](docs/decisions/0019-keep-csharp5-mono.md)), revisited only after
+  native Windows/Rhino acceptance.
+
+## Status and roadmap
+
+- **0.8.1 (2026-11-19) is the current release.** The release tree passed
+  `scripts/check-all` **26/26 in 184.6 s** alone with the 2026-11-17 baseline
+  enforced (not rebuilt); the worst positive delta was +3.31% p50 and +3.41% p95,
+  with no metric above +5%. The artifacts are `dist/stageloom-0.8.1.zip`
+  (SHA-256 `8cf1e570…`) and `grasshopper/build/out/Stageloom.gha` (SHA-256
+  `f19aa183…`); both reproduce byte-for-byte, the extension was installed and
+  enabled with its round trip passing, and `scripts/check-deployed` reports the
+  deployed plugin current. Release:
+  [v0.8.1](https://github.com/miscasquel/stageloom/releases/tag/v0.8.1).
+- **Next: 0.9**, the release candidate: freeze protocol v2 and the file
+  formats, add GH component migration and the version handshake, and run the
+  full acceptance matrix on the supported platforms.
+- **Then 1.0**, a stability and compatibility release. The plan, workstreams
+  and acceptance gates are in [docs/plan.md](docs/plan.md); no new user-facing
+  feature is planned before 1.0.
 
 ## Support
 
-Issues and support: <https://github.com/miscasquel/gh-blender-stack/issues>.
+Issues and support: <https://github.com/miscasquel/stageloom/issues>.
 
 ## Layout
 
@@ -346,8 +391,9 @@ docs/
   plan.md           the project plan (authoritative, roadmap)
   protocol.md       protocol v2 specification
   decisions/        decision records
+  listing/          icon, screenshots and listing copy for the extension platforms
 ```
 
 ## Licence
 
-GPL-3.0-or-later. See [LICENSE](LICENSE).
+GPL-3.0-or-later. See [LICENSE](LICENSE) and [NOTICE](NOTICE).

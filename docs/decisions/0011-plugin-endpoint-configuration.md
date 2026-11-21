@@ -1,4 +1,4 @@
-# 0011 — Persisted loopback endpoint for the Grasshopper plugin
+# 0011 - Persisted loopback endpoint for the Grasshopper plugin
 
 **Status:** Accepted, 2026-11-14.
 
@@ -7,8 +7,8 @@
 The plugin has always connected to `ws://127.0.0.1:59130/`. The only override
 was the undocumented `STAGELOOM_PORT` environment variable, which is invisible
 to users, awkward to set on Windows, and easy to mismatch with the add-on's
-**Server port** preference. The obvious alternative — a settings component
-whose value lives in the `.gh` document — would make the endpoint per document,
+**Server port** preference. The obvious alternative - a settings component
+whose value lives in the `.gh` document - would make the endpoint per document,
 so opening another file, or opening the same file on another machine, would
 silently point the stage components somewhere else.
 

@@ -26,7 +26,7 @@ version bump.
 - Maximum message size: 512 MiB. Maximum header size: 1 MiB. A frame over
   either cap is answered with `error` code `too_large` when a message can still
   be sent, and dropped.
-- Keepalive: the WebSocket layer's own ping — every 5 s from Blender, a peer
+- Keepalive: the WebSocket layer's own ping - every 5 s from Blender, a peer
   that does not pong within 20 s is dropped. There is no application-level
   `ping`/`pong` in v2 (the message types are reserved, §4.5). A dropped socket
   shows as `disconnected`; the stage keeps its last good output until the client
@@ -256,8 +256,8 @@ attribute contributes one `attr.<i>.values` section plus one entry in the frame'
 ### 5.2 Instances
 
 Instances are Blender's instance rows (a `GeometrySet`'s instances component) and
-Rhino's block instances. A frame's rows reference *definitions* — reusable
-geometry — carried in the same frame, so one definition crosses once however
+Rhino's block instances. A frame's rows reference *definitions* - reusable
+geometry - carried in the same frame, so one definition crosses once however
 many rows use it. Nesting is a DAG: a definition's own rows reference other
 definitions in the same table by index.
 
@@ -304,7 +304,7 @@ order:
   `idef.<i>.<p>.inst.*`.
 - The matrices are row-major (`m[row][col]`); a point transforms as a row vector
   (Rhino's `Transform` convention), so the translation sits in the fourth column
-  — elements 3, 7 and 11, as in `[1,0,0,tx, 0,1,0,ty, 0,0,1,tz, 0,0,0,1]`.
+  - elements 3, 7 and 11, as in `[1,0,0,tx, 0,1,0,ty, 0,0,1,tz, 0,0,0,1]`.
   Blender's matrices are column-major in memory, so Blender transposes each
   matrix on read and write.
 - Absent `definitions` means no instances. A definition with no geometry
@@ -488,7 +488,7 @@ frame without it.
   folds it in the same way. The `request-instances` fixture pins nested rows and
   a per-definition attribute through both codecs. Additive inside v2.
 - 2026-10-17: the keepalive statement in §2 matched no implementation. It now
-  describes what runs — the WebSocket layer's 5 s ping / 20 s timeout — and the
+  describes what runs - the WebSocket layer's 5 s ping / 20 s timeout - and the
   `ping`/`pong` messages are marked reserved (§4.5). A frame over the size or
   header cap, and a version mismatch, are now actually answered with the `error`
   codes §4.6 defines (`too_large`, `proto_mismatch`); a version mismatch is

@@ -1,4 +1,4 @@
-# Refactor seams — 0.8.0 characterization map (T3–T7)
+# Refactor seams - 0.8.0 characterization map (T3–T7)
 
 **Status:** T3 and the T4–T7 refactors are complete. This document is the
 contract for T4–T7: every seam the four refactor tasks may move, its owner, the
@@ -143,29 +143,29 @@ and `Instances.cs` is a 36-code-line facade.
 | T4 | attributes read/write, prune, descriptors | E | unknown type/domain notes, prune keeps native channels |
 | T4 | curves read/write | E | short/spanless spline notes, absent group is not "clear" |
 | T4 | points read/write | E | incomplete/shape/mismatch classified errors; atomicity gap G |
-| T4 | instances/definitions read/write | E + G | — (native Rhino paths skip under wine) |
+| T4 | instances/definitions read/write | E + G | - (native Rhino paths skip under wine) |
 | T4 | dispatch/facade, surface, empty geometry | E (mesh/curve/points) | surface meshed + note, empty/EMPTY object, duplicate-section guard |
 | T5 | hub/facade entry points | E partial | no active object, missing stack object, unique-key resolve, malformed hello |
 | T5 | lifecycle/registry, load/undo/redo, scenes | E | active registration report; dormant diagnostics |
-| T5 | request/prefix/apply, states, conflicts | E | — |
-| T5 | playback gate | E | — |
-| T5 | bake and dependent freeze/rollback | E | — |
+| T5 | request/prefix/apply, states, conflicts | E | - |
+| T5 | playback gate | E | - |
+| T5 | bake and dependent freeze/rollback | E | - |
 | T5 | start/stop server, timer dormancy | E partial | bind failure visible + recovery; dormant tick rate |
 | T6 | `StageRegistry` claims/conflicts/isolation | E (ComponentTests) | slot status halves now tested at `StageSlot`/`StageRegistry` |
 | T6 | `LinkConnection` start/stop/restart/handshake | E | idempotent Stop, invalid-port Configure, direct worker-token guard |
-| T6 | `RequestScheduler` one-in-flight/latest-wins | E | — |
+| T6 | `RequestScheduler` one-in-flight/latest-wins | E | - |
 | T6 | `ProtocolHandler` error codes/malformed/caps | E | direct `ErrorFrame` field guard |
-| T6 | `Publication` dirty flags/hello/schema | E | — |
+| T6 | `Publication` dirty flags/hello/schema | E | - |
 | T6 | `StageSlot`/`HeldFrame` snapshots | E | null slot, empty-frame sentinel, direct slot tests |
 | T6 | outbox cap | G (private) | deterministic reflection test moved to `LinkOutbox` |
 | T7 | `Build` inbound grammar/rows/cycles | E + G | no-table and table-without-rows guards |
 | T7 | `Emit` outbound rows/definitions | E + G | null/empty entry guards; real-geometry emit is G |
-| T7 | definition writer table/parts/caps/fallback | E | — |
-| T7 | Conversion/Attributes per-kind dispatch | E + G | — (native definition members skip under wine) |
+| T7 | definition writer table/parts/caps/fallback | E | - |
+| T7 | Conversion/Attributes per-kind dispatch | E + G | - (native definition members skip under wine) |
 
 ---
 
-## 1. T4 — `geometry_io` package split
+## 1. T4 - `geometry_io` package split
 
 **Current owner (T4 complete):** `blender/stageloom/blender/geometry_io/`
 (2,151 physical / 1,791 code lines in 8 files): `common.py`, `attributes.py`,
@@ -494,7 +494,7 @@ builders today (each kind owns its namespace), so the guard is tested directly.
 
 ---
 
-## 2. T5 — Blender engine object (complete)
+## 2. T5 - Blender engine object (complete)
 
 **Current owner (T5 implementation complete):** `blender/stageloom/blender/engine/` (5,375
 physical lines). `engine/runtime.py` owns the session: a single module-level
@@ -799,26 +799,26 @@ plus lifecycle), which is the intended single owner rather than a second hub.
 
 ---
 
-## 3. T6 — `GhLink` split (complete)
+## 3. T6 - `GhLink` split (complete)
 
 **Current owners:** `grasshopper/src/gh/`:
 
-- `StageRegistry.cs` (824 physical / 727 code) — document-scoped
+- `StageRegistry.cs` (824 physical / 727 code) - document-scoped
   registrations, documents, claims, the derived published view, slots,
   ownership/conflict reconciliation and UI-thread capture.
-- `LinkConnection.cs` (409 / 334) — endpoint, worker generation token
+- `LinkConnection.cs` (409 / 334) - endpoint, worker generation token
   (`LinkWorker`), bounded outbox (`LinkOutbox`), Start/Stop/Configure,
   reconnect/backoff, receiver and sender loops.
-- `RequestScheduler.cs` (451 / 394) — pending and active request contexts, one
+- `RequestScheduler.cs` (451 / 394) - pending and active request contexts, one
   in-flight solve, latest-wins queueing, retry/watchdog and the SolutionEnd
   handler.
-- `ProtocolHandler.cs` (261 / 215) — frame decode/validation, peer caps,
+- `ProtocolHandler.cs` (261 / 215) - frame decode/validation, peer caps,
   request/error dispatch and the classified error frame.
-- `Publication.cs` (287 / 242) — hello/schema dirty flags, the UI-thread
+- `Publication.cs` (287 / 242) - hello/schema dirty flags, the UI-thread
   document units/name snapshot and the 2 s heartbeat.
-- `StageSlot.cs` (190 / 162) — `HeldFrame` and `StageSlot` snapshots, status
+- `StageSlot.cs` (190 / 162) - `HeldFrame` and `StageSlot` snapshots, status
   halves and epoch/rid pinning.
-- `GhLink.cs` (201 / 173) — the stable facade and the bounded note buffer. It
+- `GhLink.cs` (201 / 173) - the stable facade and the bounded note buffer. It
   has no socket loop, registry implementation or protocol switch.
 
 Dependency direction is one-way except for two explicit notification calls:
@@ -845,7 +845,7 @@ generation token. The remaining `LinkTests` checks still drive the product
 through `GhLink`, so the facade is the integration surface. No assertion was
 deleted or weakened; the C# runtime count is **685** (was 681).
 
-### 3.1 `StageRegistry` — claims, conflicts, document isolation
+### 3.1 `StageRegistry` - claims, conflicts, document isolation
 
 **Entry points:** `Register`/`Unregister`, `RegisterInDocumentForTest`,
 `PublishStageIn`/`PublishStageOut`/`PublishParam`, `Forget`, `Slot`,
@@ -903,7 +903,7 @@ document identity is exercised through `RegisterInDocumentForTest` with
 synthetic ids and through the component base (`AddedToDocument`). The native
 two-document GUI case is a manual acceptance item.
 
-### 3.2 `LinkConnection` — start/stop/restart, worker lifetime, handshake
+### 3.2 `LinkConnection` - start/stop/restart, worker lifetime, handshake
 
 **Entry points:** `Start`, `Stop`, `Configure`, `Connected`, `Running`,
 `ActiveSenders`, `Loop`, `SendLoop`, `ReceiveLoop`, `Endpoint`, `Port`.
@@ -958,7 +958,7 @@ namespace-level leaves so the other owners never reach into the loop.
 **Gaps:** a true OS-level half-open socket and a GUI Rhino document are not
 reproducible in the console harness; `FakeServer` covers the scripted cases.
 
-### 3.3 `RequestScheduler` — one in-flight, latest-wins, retries
+### 3.3 `RequestScheduler` - one in-flight, latest-wins, retries
 
 **Entry points:** `RequestStage`, `SchedulePendingSolve`, `BeginRequestSolve`,
 `RunRequestSolve`, `FinishRequestSolveLocked`, `RetryStaleSolves`,
@@ -1013,7 +1013,7 @@ the sense of direct calls through the facade.
 without a document; the console suite drives the same context code through the
 hooks.
 
-### 3.4 `ProtocolHandler` — frame decode, caps, refusals, error codes
+### 3.4 `ProtocolHandler` - frame decode, caps, refusals, error codes
 
 **Entry points:** `Handle`, `ReceiveLoop` decode path, `ReadCaps`,
 `AttributeList`, `HeaderList`, `HeaderObjects`, `ErrorFrame`.
@@ -1064,7 +1064,7 @@ owner. The direct owner guard decodes an `ErrorFrame` and checks the optional
 
 **Gaps:** fuzzing 10k mutated frames is T10, not T3.
 
-### 3.5 `Publication` — hello/schema dirty flags and document snapshot
+### 3.5 `Publication` - hello/schema dirty flags and document snapshot
 
 **Entry points:** `Publish`, `Send`, `SendPublication`, `StagesChangedLocked`,
 `MarkDirtyLocked`, `CaptureUnits`, `CaptureDocumentSnapshot`,
@@ -1117,7 +1117,7 @@ the heartbeat; the registry supplies the published view.
 **Gaps:** the heartbeat republish at 2 s is timing-based; LinkTests observes
 that an unchanged schema is quiet within a 600 ms window, not a long soak.
 
-### 3.6 `StageSlot`/`HeldFrame` — snapshots, status halves, frame identity
+### 3.6 `StageSlot`/`HeldFrame` - snapshots, status halves, frame identity
 
 **Entry points:** `StageSlot` (`Rid`, `SolveRid`, `Params`, `Frame`, `Status`,
 `Message`, `InStatus`/`InMessage`, `OutStatus`/`OutMessage`, `ShouldSend`,
@@ -1224,7 +1224,7 @@ lines (was `GhLink` 2,489).
 
 ---
 
-## 4. T7 — `Instances` split / table-driven conversion
+## 4. T7 - `Instances` split / table-driven conversion
 
 **Current owner (T7 complete):** `grasshopper/src/gh/Instances.cs` is a
 36-code-line facade over `InstanceBuild.cs` (rows, `Build`, `DefinitionBuilder`),

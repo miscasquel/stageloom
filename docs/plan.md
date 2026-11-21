@@ -1,4 +1,4 @@
-# Stageloom — 1.0 plan
+# Stageloom - 1.0 plan
 
 **Status:** 1.0 planning, 2026-11-16; 0.8.0 released 2026-11-19; 0.8.1 patch
 released 2026-11-19. Baseline: **v0.7.0**.
@@ -132,13 +132,13 @@ target; preview off is within noise. See
 
 ## 3. Supported platforms
 
-**Tier 1 — must pass for 1.0**
+**Tier 1 - must pass for 1.0**
 
 - Windows 11 x64
 - Rhino 8 with Grasshopper 1
 - Blender 5.3
 
-**Tier 2 — supported add-on, no Rhino on the same OS**
+**Tier 2 - supported add-on, no Rhino on the same OS**
 
 - Blender 5.3 on Linux and macOS
 - The `.gha` is Windows-only; Linux + wine remains the development and test
@@ -406,6 +406,11 @@ The old A1–A10 remain the functional core. Add the release gates that the
       fixtures comment, README, tests).
 - [ ] `CHANGELOG.md` has the 1.0 section with upgrade notes and known
       limitations.
+- [ ] GitHub release title is exactly `Stageloom <version>`; the theme sentence
+      stays in the body. The body carries no duplicated changelog heading, and
+      ends with the Install block and the artifact table with SHA-256 hashes.
+- [ ] `SHA256SUMS.txt` is attached to the release alongside the zip and
+      `.gha`; tags are annotated and never moved after publication.
 - [ ] `docs/plan.md`, `README.md`, `docs/protocol.md` and compliance notes agree.
 - [ ] Core, Blender, C#/codec, extension and platform suites pass.
 - [ ] Windows live acceptance and multi-stage bake acceptance recorded.
@@ -444,11 +449,11 @@ The old A1–A10 remain the functional core. Add the release gates that the
 
 ## 10. References
 
-- [`protocol.md`](protocol.md) — wire protocol v2.
-- [`decisions/`](decisions/) — architecture decisions, including live-only
+- [`protocol.md`](protocol.md) - wire protocol v2.
+- [`decisions/`](decisions/) - architecture decisions, including live-only
   stages (0016), compatibility shims (0017), the official wheel (0018) and the
   C# 5/Mono no-go (0019).
-- [`extensions-compliance.md`](extensions-compliance.md) — current platform
+- [`extensions-compliance.md`](extensions-compliance.md) - current platform
   compliance record.
-- [`../README.md`](../README.md) — product overview and supported requirements.
-- [`../CHANGELOG.md`](../CHANGELOG.md) — release history and known limitations.
+- [`../README.md`](../README.md) - product overview and supported requirements.
+- [`../CHANGELOG.md`](../CHANGELOG.md) - release history and known limitations.

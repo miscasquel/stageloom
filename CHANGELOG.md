@@ -4,13 +4,16 @@
      the person upgrading: what changed since the previous version, in their terms,
      and nothing else. No release ordinals; no internal churn that landed and was
      replaced inside the same unreleased window; no inventories of deleted code;
-     and the post ends where this version's section ends — older sections are not
-     repeated. The commits carry the engineering record. -->
+     and the post ends where this version's section ends, older sections are not
+     repeated. The commits carry the engineering record.
+     At publish time the GitHub release title is exactly "Stageloom <version>"
+     (the theme sentence stays in the body), the body gains an Install block and
+     an artifact table with SHA-256 hashes, and a SHA256SUMS.txt is attached. -->
 Notable changes to this project, following
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.8.1] — 2026-11-19
+## [0.8.1] - 2026-11-19
 
 This is a patch release: the only user-facing change is a fix for **Clear
 Bake** after a stack object was deleted. Everything else is release
@@ -37,7 +40,7 @@ acceptance remains deferred, and 0.8.1 makes no native-parity claim.
   `scripts/test-blender` now prints Blender's native crash log when the suite
   dies on a signal, so a crash is diagnosable instead of silent.
 
-## [0.8.0] — 2026-11-19
+## [0.8.0] - 2026-11-19
 
 This is the architecture, speed and truth release. There are no new user-facing
 features: the same stages, geometry, blocks, parameters and playback work the
@@ -131,7 +134,7 @@ Blender's Geometry Nodes bake, not a native Rhino acceptance run.
   the baseline enforced; the worst positive delta was **+0.49% p50** and
   **+2.39% p95**, and no metric exceeded +5%.
 
-## [0.7.0] — 2026-11-16
+## [0.7.0] - 2026-11-16
 
 This release is about correctness rather than new features. Every stage is live,
 a bake keeps its downstream chain consistent, multi-part blocks survive both
@@ -219,7 +222,7 @@ affected stages; resolve each affected stage once in the panel.
   extension round trip. `scripts/check-all` passes in 116.0 s on the development
   machine.
 
-## [0.6.0] — 2026-11-14
+## [0.6.0] - 2026-11-14
 
 Grasshopper's endpoint is now configurable and saved for the whole
 installation, bakes show their progress, block instances land correctly in
@@ -257,8 +260,8 @@ duplicated stage.
   Blender's cursor progress number follows the baked frame, so a long bake no
   longer looks stalled. The counter clears when the bake finishes or fails.
 - **The reference performance matrix is in the repository.** `scripts/bench`
-  builds the plan's reference scenes — 10k/100k/1M triangles, a 13× instance
-  definition, a three-stage chain and live playback — and fails when a budget
+  builds the plan's reference scenes - 10k/100k/1M triangles, a 13× instance
+  definition, a three-stage chain and live playback - and fails when a budget
   regresses. The 2026-11-14 Linux baseline is recorded in `benchmarks/results/`:
   the 100k round trip is 13.5 ms against a 50 ms budget and a 13× instance
   prefix plus encode is 10.5 ms against 100 ms.
@@ -295,7 +298,7 @@ duplicated stage.
   own last request id when its output changed, unless it has a newer request
   queued (that solve reads its inputs and answers the newer id).
 
-## [0.5.2] — 2026-11-13
+## [0.5.2] - 2026-11-13
 
 Baking a stage whose output contains nested instances no longer crashes
 Blender. The native bake owns the node graph while it steps frames, and the
@@ -308,14 +311,14 @@ animation are preserved. No protocol change.
 ### Fixed
 
 - **Baking nested instances no longer crashes Blender 5.3.** A stage output
-  with a nested Instance-on-Points chain — an instance whose definition itself
-  places instances — could segfault the native bake job because the add-on
+  with a nested Instance-on-Points chain - an instance whose definition itself
+  places instances - could segfault the native bake job because the add-on
   inspected and rebuilt the node graph from `frame_change_post` on every frame.
   The group is now built once before the bake and held read-only for the job.
   Instance rendering and playback are unchanged. Rebake after a Grasshopper
   definition-topology change; a bake keeps the graph it started with.
 
-## [0.5.1] — 2026-11-13
+## [0.5.1] - 2026-11-13
 
 Grasshopper now recomputes only the stage Blender asked for. A definition can
 have a generator stage with no Stage In, a stateful output can run live outside
@@ -364,7 +367,7 @@ default for new stages.
   request or bumps the generation; for a live stage it is dropped rather than
   cached.
 
-## [0.5.0] — 2026-11-12
+## [0.5.0] - 2026-11-12
 
 Play Every Frame now waits for each stage, a stage can bake natively for
 rendering, and new Param nodes stay compact until you open them. A file with no
@@ -426,7 +429,7 @@ v2 is unchanged.
   frame on each playback step. Labels, types, groups, ranges and value lists
   still count as declaration changes.
 
-## [0.4.1] — 2026-11-07
+## [0.4.1] - 2026-11-07
 
 A bug-fix release for multi-stage stacks. Stage Out now handles n-gons and
 holey n-gons, responses are gated to real requests, stages follow the modifier
@@ -473,7 +476,7 @@ animation are preserved.
   raising during Stage Out. A block definition with no usable objects is now
   skipped with a warning instead of producing an empty block and instance row.
 
-## [0.4.0] — 2026-10-29
+## [0.4.0] - 2026-10-29
 
 Stageloom is the new name for GH Stack. This release also carries curve and
 wire-edge attributes, moves the frame cache to the extension's user data
@@ -510,7 +513,7 @@ migrate on load. The old frame cache is not read.
   unreferenced vertex. A face-less mesh that still reaches Stage In also adds a
   runtime note.
 
-## [0.3.1] — 2026-10-21
+## [0.3.1] - 2026-10-21
 
 The post-0.3.0 review pass: a multi-stage dirty pass is about 2.5× faster, an
 answer that drops an attribute no longer leaves the old one behind, Stage In
@@ -550,8 +553,8 @@ rebuild and redeploy the `.gha` for the plugin fixes and restart Rhino.
   colours. `crease_edge`, `position` and leading-dot internals stay protected.
   A removed attribute or colour used to survive on the helper.
 - **A definition-only answer is applied once.** The missing-payload check now
-  looks at the helper each section group actually writes — base geometry,
-  `idef.<i>` definitions and instance rows — so an output made only of block
+  looks at the helper each section group actually writes - base geometry,
+  `idef.<i>` definitions and instance rows - so an output made only of block
   definitions is no longer re-applied on every pass.
 - **Stage In survives a malformed frame.** Building the stage geometry is
   guarded: a bad frame becomes a stage `error` with a runtime message and the
@@ -587,7 +590,7 @@ rebuild and redeploy the `.gha` for the plugin fixes and restart Rhino.
   not been re-measured with the rebuilt `.gha`; preview off remains the
   mitigation.
 
-## [0.3.0] — 2026-10-20
+## [0.3.0] - 2026-10-20
 
 The live-sync release: edits reach Grasshopper as they happen, stages gain a
 full lifecycle (Pull, Freeze, Key all, Purge orphans), duplicated stacks become
@@ -596,8 +599,8 @@ independent, and the add-on and plugin share Blender's icon set.
 ### Added
 
 - **Pull and Freeze.** Pull asks Grasshopper for a stage's output again without
-  touching the frame cache; Freeze parks a stage — no requests, no cache replay,
-  the output stays — and Pull is how a frozen stage is refreshed on demand. A
+  touching the frame cache; Freeze parks a stage - no requests, no cache replay,
+  the output stays - and Pull is how a frozen stage is refreshed on demand. A
   frozen stage reports `frozen`; a stage no document has ever answered reports
   `unbound`.
 - **Key all.** One button keys every parameter of a stage at the current frame;
@@ -610,7 +613,7 @@ independent, and the add-on and plugin share Blender's icon set.
 
 ### Changed
 
-- **The default server port is 59130** (was 9130, where BlenderKit sits — the
+- **The default server port is 59130** (was 9130, where BlenderKit sits - the
   two fought over the loopback). A saved preference still on 9130 is moved once
   on register, with a notice in the console. The plugin's default endpoint and
   `tools/fake_gh` carry the same number, so a stale `.gha` needs a rebuild and
@@ -644,7 +647,7 @@ independent, and the add-on and plugin share Blender's icon set.
   - **Edit Mode syncs while the mode is open.** Edits live in the BMesh until
     the mesh is flushed; the engine may have been sending the pre-edit cage the
     whole session. The prefix is now flushed, read from the evaluated object,
-    and a head-of-stack stage sees shape keys too — the base datablocks were
+    and a head-of-stack stage sees shape keys too - the base datablocks were
     blind to them.
   - **Every object in Edit Mode syncs, not only the active one.** Multi-object
     editing gives each selected object its own BMesh edits; a stroke on a
@@ -654,7 +657,7 @@ independent, and the add-on and plugin share Blender's icon set.
     stroke.
   - **An edit can no longer be lost between the tag and the pass.** The engine
     drains the depsgraph at the start of every tick, before its own prefix
-    evaluation can mute the handler — the "randomly stops until Push" failure.
+    evaluation can mute the handler - the "randomly stops until Push" failure.
     A watchdog names and clears a prefix guard that a failed pass left up, on
     the next tick and on every reload.
   - **Any depsgraph update retires the memoized prefix.** The old revision kept
@@ -669,7 +672,7 @@ independent, and the add-on and plugin share Blender's icon set.
     actually goes out; a Pull permit is spent by the send it caused, not before
     it.
   - **A cleared helper is re-applied.** If helper data is emptied out of band
-    (a script, an undo), the applied-out-hash skip refused every answer — Push
+    (a script, an undo), the applied-out-hash skip refused every answer - Push
     included. A frame that names geometry over empty helpers is re-applied.
   - **Waiting is cheap.** While an answer is outstanding, a pass returns before
     it reads the prefix: measured on a 51k-vertex drag, 62 prefix clones for 13
@@ -697,10 +700,10 @@ independent, and the add-on and plugin share Blender's icon set.
   the request id it started with and answers that. The `.gha` is rebuilt and
   deployed; **Rhino must be restarted** to load it (Grasshopper scans Libraries
   on load only).
-- **The Diagnostics panel shows the recent sync activity** — the last depsgraph
+- **The Diagnostics panel shows the recent sync activity** - the last depsgraph
   updates, sends, applies and resets, plus the ages of the last trigger, send
   and apply, per-stage clone/encode/answer/apply timings, and a "no send"
-  reason when a pass that saw the scene move stayed quiet — so a stall is a
+  reason when a pass that saw the scene move stayed quiet - so a stall is a
   visible chain instead of a guess.
 - **Documents saved before the `Attributes` output existed open and run again.**
   A Stage In loaded from such a document used to throw
@@ -722,7 +725,7 @@ independent, and the add-on and plugin share Blender's icon set.
   turning off component preview lowers the delay. The cause is not measured yet
   and transport is ruled out.
 
-## [0.2.2] — 2026-10-18
+## [0.2.2] - 2026-10-18
 
 A conversion patch: cyclic NURBS curves are exact in both directions. A cyclic
 curve used to arrive in Rhino 262 mm off its Blender shape and come home as an
@@ -736,13 +739,13 @@ approximate cubic fit; both problems are fixed at the source.
   curve sat 262 mm off its Blender shape). The too-high degree then defeated the
   encoder's exact-span guard, so the curve came back as a cubic fit with a
   `curve_approximated` warning, and cyclic curves with weights silently lost
-  their periodicity. Curves whose knots match Blender's NURBS modes —
-  uniform-open, clamped-uniform, uniform-periodic — now travel as one wire NURBS
+  their periodicity. Curves whose knots match Blender's NURBS modes
+  uniform-open, clamped-uniform, uniform-periodic - now travel as one wire NURBS
   with their order, knot mode and cyclic flag, and come back as one spline
   instead of a span split. No protocol change; the `.gha` needs a rebuild and a
   Rhino restart to pick it up.
 
-## [0.2.1] — 2026-10-17
+## [0.2.1] - 2026-10-17
 
 A hygiene patch: the add-on is extension-platform ready (online access,
 permissions, licence, packaging), the plugin's threading and key registry are
@@ -751,9 +754,9 @@ made safe, and both codecs now agree on exactly what they accept.
 ### Added
 
 - **Behavioural coverage for the plugin.** `GhStackLinkTests.exe` drives the
-  real `GhLink` against a scripted fake server — hello content, stage and
+  real `GhLink` against a scripted fake server - hello content, stage and
   parameter publishing, slot bookkeeping, error answers, unowned-key pruning,
-  teardown — and runs with layer C. The solve half still needs Rhino.
+  teardown - and runs with layer C. The solve half still needs Rhino.
 - **`unknown_stage` answers.** A request for a key no component owns is
   answered with the protocol's error instead of being left to the timeout, and
   the stage shows it.
@@ -775,10 +778,10 @@ made safe, and both codecs now agree on exactly what they accept.
   non-array `sections`, or 1000-deep nesting; `NaN`/`Infinity` are rejected on
   both sides (Python accepts them by default); a header over the cap is
   `too_large` on both sides; the `v` boundary is pinned by console cases.
-  `proto_mismatch` and `too_large` are actually sent now — an error frame
-  precedes the drop — and `FormatDouble`'s claim matches its behaviour.
+  `proto_mismatch` and `too_large` are actually sent now - an error frame
+  precedes the drop - and `FormatDouble`'s claim matches its behaviour.
 - **Cache eviction is linear.** The index found the oldest entry with a scan
-  and re-summed the total per removal — quadratic in the structure every
+  and re-summed the total per removal - quadratic in the structure every
   response touches. A lazy heap and a running total replace it.
 - **Unnamed block definitions can no longer collide.** The graph-side fallback
   name is a content identity (own sections, nested rows, recursive children),
@@ -806,18 +809,18 @@ made safe, and both codecs now agree on exactly what they accept.
   ping / 20 s timeout and marks the application-level `ping`/`pong` messages
   reserved; §4.6's `proto_mismatch` row matches both sides' behaviour.
 
-## [0.2.0] — 2026-10-17
+## [0.2.0] - 2026-10-17
 
 Fifth release: named attributes travel with the geometry both ways, Grasshopper
-blocks cross as Blender instances and back — nested blocks included — and the
+blocks cross as Blender instances and back - nested blocks included - and the
 helper data moves into a dedicated `GH Stage` scene so the outliner stays yours.
 
 ### Added
 
 - **Attributes travel with the geometry, both ways.** Blender's named attributes
-  — every type it has (floats, ints, booleans, strings, vectors, 2D/4D values,
+  - every type it has (floats, ints, booleans, strings, vectors, 2D/4D values,
   colours, quaternions, 4x4 matrices, `INT8`, 2D pairs) and every Mesh domain
-  (POINT, EDGE, FACE, CORNER), plus point clouds — are serialized as `attr.*`
+  (POINT, EDGE, FACE, CORNER), plus point clouds - are serialized as `attr.*`
   sections with a descriptor each, and attached to the Rhino geometry's
   UserDictionary, so they ride along with duplication and transforms. Stage In
   fills them, Stage Out sends back whatever the graph attached. On the Blender
@@ -843,8 +846,8 @@ helper data moves into a dedicated `GH Stage` scene so the outliner stays yours.
 - **Instances travel as blocks, both ways.** Blender's instanced geometry
   crosses as a definition table (`definitions`, `idef.<i>.*` groups and the
   `inst.ref_def` / `inst.transforms` rows, protocol §5.2). Stage In builds each
-  definition as a **named graph-side block** — the route Grasshopper's own Model
-  Block Definition/Instance components use — so nothing is written to the
+  definition as a **named graph-side block** - the route Grasshopper's own Model
+  Block Definition/Instance components use - so nothing is written to the
   document at solve time; Rhino materializes the blocks when the user bakes and
   reuses them, nested blocks included. Stage Out turns the graph's
   `GH_InstanceReference` items back into the same table and rows, reading
@@ -862,7 +865,7 @@ helper data moves into a dedicated `GH Stage` scene so the outliner stays yours.
   `.gha` (`check=s9`). **All rounds passed 2026-10-16** (`spikes/results/s9.txt`):
   the attribute store survives duplication, transforms, goo duplication and bake
   for every geometry kind. Blocks: a graph-side definition needs a **Name** to
-  be valid — named, it previews and bakes with no document write, nested blocks
+  be valid - named, it previews and bakes with no document write, nested blocks
   included, and repeated bakes materialize the blocks once. The rounds caught
   two product bugs (definition attributes attached after the document copy was
   taken; a block-instance `ModelObject` refusing the geometry cast) and a probe
@@ -892,7 +895,7 @@ helper data moves into a dedicated `GH Stage` scene so the outliner stays yours.
   point colours and attributes). New **Point Cloud Points** component explodes
   it into a point list; Stage Out accepts both the cloud and individual points.
 
-## [0.1.3] — 2026-10-15
+## [0.1.3] - 2026-10-15
 
 Geometry that a stage reads through a node graph now follows it, and the prefix
 memo follows Blender's depsgraph instead of a description of what a prefix reads.
@@ -900,8 +903,8 @@ memo follows Blender's depsgraph instead of a description of what a prefix reads
 ### Fixed
 
 - **Geometry a node graph references now reaches Grasshopper.** A prefix that
-  reads another object — an Object Info node, a modifier input of type Object or
-  Collection — kept sending the geometry from before that object moved: the stage
+  reads another object - an Object Info node, a modifier input of type Object or
+  Collection - kept sending the geometry from before that object moved: the stage
   looked stuck, and only Push, a frame change or a file reload shook it loose.
 - **A slider on a prefix Geometry Nodes modifier reaches Grasshopper.** Its stored
   group input values are ID properties rather than RNA, so the revision could not
@@ -915,20 +918,20 @@ memo follows Blender's depsgraph instead of a description of what a prefix reads
 ### Changed
 
 - **The prefix memo is invalidated by Blender's depsgraph.** The revision used to
-  freeze the values of everything a prefix reads — base geometry, modifier
-  settings, node-graph wiring, referenced objects, shape keys — and compare them
+  freeze the values of everything a prefix reads - base geometry, modifier
+  settings, node-graph wiring, referenced objects, shape keys - and compare them
   on every pass. A frozen value cannot follow a reference, which is why each of
   the three fixes above was possible to miss; now what Blender tags is what
   retires the memo, so the class of failure is gone rather than the instances.
   Measured on a 50k-triangle prefix: a memo hit costs 0.010 ms where it cost
-  8.1 ms, and a stage at the head of the stack — which had no memo at all — 0.006
+  8.1 ms, and a stage at the head of the stack - which had no memo at all - 0.006
   ms where it re-read its base on every pass.
 - **Reactions are immediate.** The engine runs at its fast cadence for a second
   after an edit, a response or a frame change instead of waiting up to an idle
   interval, so playback fills frames as each answer arrives. A quiet scene still
   idles.
 - **The Diagnostics panel reports how long a stage has been waiting**, past a
-  second — the shape a sync fault takes when nothing else is visible.
+  second - the shape a sync fault takes when nothing else is visible.
 - **A saved port is the port the server binds.** The preferences class registered
   after the engine, so the server started before the port was known and silently
   used the default.
@@ -936,7 +939,7 @@ memo follows Blender's depsgraph instead of a description of what a prefix reads
   interleave with a large frame and corrupt the connection, and the server's
   keepalive is explicit (5 s ping, 20 s timeout) rather than the library defaults.
 
-## [0.1.2] — 2026-10-12
+## [0.1.2] - 2026-10-12
 
 Third release: the simulation-style frame cache, mid-stack prefix evaluation, and
 a hardening pass over the plugin and the decode boundary.
@@ -995,7 +998,7 @@ a hardening pass over the plugin and the decode boundary.
     section says a build is not live until the copy *and* a Rhino restart have
     happened.
   - `fake_gh --fail-after N` answers response N with `gh_solve_failed`;
-    `--coalesce` models the plugin's collapsed `ScheduleSolution` solves — only
+    `--coalesce` models the plugin's collapsed `ScheduleSolution` solves - only
     the newest request of a solve window is answered, and the report counts the
     dropped ones as `dropped`.
 
@@ -1005,7 +1008,7 @@ a hardening pass over the plugin and the decode boundary.
   wait out the 30 s timeout: the component enqueues the protocol's error response
   (`gh_solve_failed`, empty hash, zeroed counts) when nothing was sent, and
   records the slot status under the same lock the retry path reads. The engine's
-  error branch also no longer re-sends on the same tick — a solve that just
+  error branch also no longer re-sends on the same tick - a solve that just
   failed fails again, so retries now follow protocol §7 (next change or Push).
   Layer B pins both halves of that behavior (`SolveFailureTests`), with
   `fake_gh --fail-after` and the negative control in the commit.
@@ -1035,7 +1038,7 @@ a hardening pass over the plugin and the decode boundary.
   frame**, so the frame cache answered every frame with the first frame's result
   and the stage never moved on the timeline. `_prefix_revision` enumerates what
   the evaluated prefix depends on, and the frame was not in that list: a Scene
-  Time node — like a simulation zone or a driver expression — is read at solve
+  Time node - like a simulation zone or a driver expression - is read at solve
   time rather than stored on the modifier, so the revision (modifier properties,
   node-graph wiring, base geometry, upstream outputs, shape keys) was
   byte-identical across frames and the prefix memo returned the first evaluation.
@@ -1051,7 +1054,7 @@ a hardening pass over the plugin and the decode boundary.
   inherit what a different object of that name had evaluated; it is keyed by
   object identity now (`as_pointer()`, which holds no reference). And the prefix
   memo's revision read the whole base mesh on every pass, not only on a clone, so
-  a *memo hit* cost 8.7 ms at 50k triangles against 45 ms for the clone — see
+  a *memo hit* cost 8.7 ms at 50k triangles against 45 ms for the clone - see
   P4-1 in the 0.3.x review record.
 - `register()` cleared only the disk stores, so a decoded frame, an evaluated
   prefix, a pending request and the counters all survived a disable/enable. All
@@ -1061,8 +1064,8 @@ a hardening pass over the plugin and the decode boundary.
   flight was not requested at all, so a pass over a range evaluated a fraction of
   it (measured: 3 of 10 frames). Each frame is now evaluated on demand: **one
   evaluation at a time**, and the frame the playhead is on is requested on the
-  first pass after an answer lands. Frames merely passed over are **not queued** —
-  see the entry below for why — but every answer is stored, so a frame evaluated
+  first pass after an answer lands. Frames merely passed over are **not queued**
+  see the entry below for why - but every answer is stored, so a frame evaluated
   once is free afterwards. Measured over 24 frames scrubbed at 20 fps: 3 requests
   at a 400 ms round trip and 2 at 800 ms, against one per frame before, with the
   frame the playhead stops on always evaluated. A `stage.rid` regression from the
@@ -1084,7 +1087,7 @@ a hardening pass over the plugin and the decode boundary.
   uncached frames: **a peak of two requests in flight**, and 11 requests where 7
   do the same work. That is the backlog above returning by another route, and,
   because the plugin coalesces its solves, it can answer a request the engine has
-  stopped waiting for — which left a stage looking stuck until a manual Push. The
+  stopped waiting for - which left a stage looking stuck until a manual Push. The
   in-flight entry now survives a cache hit and is cleared only when the answer
   arrives, when the timeout gives up on it, or on an explicit reset (Push, a
   client `hello`, a load). Layer B covers the invariant directly
@@ -1092,23 +1095,23 @@ a hardening pass over the plugin and the decode boundary.
 - A request that was never delivered stalled the stage for a whole timeout. With
   no client socket to carry it, `GhServer.send` dropped the frame silently while
   the engine recorded it as pending, so the stage waited for an answer nobody had
-  been asked for — and the retry was gated on that same entry. `send` now reports
+  been asked for - and the retry was gated on that same entry. `send` now reports
   whether a client received the frame, the engine leaves the stage `disconnected`
   instead of pending, and `bridge.state["clients"]` exposes the socket count.
 - Reopened files could end up with no geometry and no visible error. A stage
   keeps its geometry hash in the `.blend`, so the first request after a load was
-  a `ref` — for geometry the client may no longer hold. The plugin read
+  a `ref` - for geometry the client may no longer hold. The plugin read
   `geom.mode` and then ignored it, so an unservable `ref` was dropped without a
   reply: Blender waited out its timeout, retried with another `ref`, and looped
   forever. Both sides are fixed:
   - A load, and a `hello`, now clear the geometry hash, so the next request goes
-    out in full — the rule protocol §8.8 already states for the first request
+    out in full - the rule protocol §8.8 already states for the first request
     after a connection.
   - The plugin tracks the hash its sections belong to and answers `unknown_ref`
     (protocol §4.3) for a `ref` it cannot serve, so Blender resends in full
     instead of hanging.
   - Blender now handles the standalone `error` message (protocol §4.6), which it
-    previously ignored entirely — only the error-status response shape was
+    previously ignored entirely - only the error-status response shape was
     handled, so a spec-shaped refusal passed unnoticed.
   - A request that does time out no longer retries the same `ref`: it is retried
     in full, and the failure stays visible instead of being overwritten by the
@@ -1136,7 +1139,7 @@ a hardening pass over the plugin and the decode boundary.
 - A cached frame that is already applied is a complete no-op: no scene writes,
   no depsgraph tag.
 
-## [0.1.1] — 2026-10-12
+## [0.1.1] - 2026-10-12
 
 Second release: all geometry kinds, exact curves, and a real Blender extension.
 
@@ -1176,10 +1179,10 @@ Second release: all geometry kinds, exact curves, and a real Blender extension.
   ("header length over the cap") and the connection no longer drops.
 - Rational curves: Rhino stores homogeneous control points while the wire (and
   Blender) carry Euclidean coordinates plus a weight. Mixing the two distorted
-  every rational curve — arcs and ellipses arrived as parabolas. Both
+  every rational curve - arcs and ellipses arrived as parabolas. Both
   directions convert explicitly now.
 
-## [0.1.0] — 2026-10-12
+## [0.1.0] - 2026-10-12
 
 First public release: a working demo of the Blender ↔ Grasshopper loop.
 

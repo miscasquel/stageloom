@@ -1,4 +1,4 @@
-# 0009 — Play Every Frame sync and opt-in native stage bake
+# 0009 - Play Every Frame sync and opt-in native stage bake
 
 **Status:** Accepted, 2026-11-08. Amends [0008](0008-simulation-style-frame-cache.md):
 the frame cache remains the default path; a native bake is an explicit render

@@ -1,4 +1,4 @@
-# 0015 — Bake triggers and freezes downstream dependents
+# 0015 - Bake triggers and freezes downstream dependents
 
 **Status:** Accepted, 2026-11-16. Amends
 [0014](0014-bake-freezes-upstream.md) for the downstream rule: the selected

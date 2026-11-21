@@ -1,4 +1,4 @@
-# 0013 — Stage keys are unique; duplicates are a strict conflict
+# 0013 - Stage keys are unique; duplicates are a strict conflict
 
 **Status:** Accepted, 2026-11-14.
 

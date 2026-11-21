@@ -1,4 +1,4 @@
-# 0020 — One version source and reproducible release artifacts
+# 0020 - One version source and reproducible release artifacts
 
 **Status:** Accepted, 2026-11-18 (0.8.0 T9a).
 

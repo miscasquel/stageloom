@@ -1,4 +1,4 @@
-# 0002 — Tag-only SubD creases
+# 0002 - Tag-only SubD creases
 
 **Status:** Accepted, 2026-10-10 (D2)
 

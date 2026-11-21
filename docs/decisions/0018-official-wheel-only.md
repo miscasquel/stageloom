@@ -1,4 +1,4 @@
-# 0018 — The official websockets wheel is the only source
+# 0018 - The official websockets wheel is the only source
 
 **Status:** Accepted, 2026-11-16 (0.8.0 T2). Decides against the `vendor/`
 fallback in [0006](0006-carried-decisions.md).

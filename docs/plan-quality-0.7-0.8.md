@@ -1,4 +1,4 @@
-# Stageloom 0.7.0 / 0.8.0 — quality plan (rev. 2)
+# Stageloom 0.7.0 / 0.8.0 - quality plan (rev. 2)
 
 **Status:** 0.7.0 complete, 2026-11-16. 0.8.0 complete and released
 2026-11-19; 0.8.1 is released (2026-11-19). T1
@@ -170,8 +170,8 @@ to change, one owner, no duplicated invariant, an explicit interface, and a
 test. Exceptions are allowed with a short comment explaining why the unit is
 cohesive. This replaces the arbitrary LOC thresholds in rev. 1.
 
-**Release target:** 0.7.0 — no module below 7/10, overall ≈ 8/10.
-0.8.0 — every module ≥ 8.5/10, overall ≥ 9/10, with residual exceptions listed
+**Release target:** 0.7.0 - no module below 7/10, overall ≈ 8/10.
+0.8.0 - every module ≥ 8.5/10, overall ≥ 9/10, with residual exceptions listed
 as accepted ADRs rather than open findings.
 
 ### Measurable 0.8.0 gates
@@ -225,13 +225,13 @@ as accepted ADRs rather than open findings.
 A shim is code kept only to read or accept an older persisted form or caller.
 Current examples:
 
-- `RootKey = "GHStack.Attributes"` — reads attributes saved before the rebrand.
-- The legacy data-root migration — moves a preference from the old path.
-- `gh_stack_*` node-group metadata — reads/reuses node groups built before the
+- `RootKey = "GHStack.Attributes"` - reads attributes saved before the rebrand.
+- The legacy data-root migration - moves a preference from the old path.
+- `gh_stack_*` node-group metadata - reads/reuses node groups built before the
   current format.
-- `HasOutput` — tolerates an old saved Stage Out without newer outputs.
-- `PublishStage` / `SetSlotStatus` — aliases only tests call.
-- Text-only warning overloads — used by live Rhino scripts, not the product.
+- `HasOutput` - tolerates an old saved Stage Out without newer outputs.
+- `PublishStage` / `SetSlotStatus` - aliases only tests call.
+- Text-only warning overloads - used by live Rhino scripts, not the product.
 
 **Policy:** every shim must have (a) an ADR or a comment stating why, (b) a test
 that exercises the old form, and (c) a version after which it is removed. No new
@@ -275,7 +275,7 @@ later evaluation; after W4 there is no custom cache to confuse with it.
 
 ### 2.4 Framework assessment (D7)
 
-**Blender add-on — no framework rewrite.** It is a `bpy` application; there is
+**Blender add-on - no framework rewrite.** It is a `bpy` application; there is
 no alternative framework that improves extension compliance. Keep pure Python,
 the official `websockets` wheel, `blender_manifest.toml`, permissions, and no
 `sys.path` manipulation in shipped code. The compliance work is packaging and
@@ -286,7 +286,7 @@ architecture, not a new framework:
 - 0.8.0 extension zip and `.gha` reproducible for the same tree/toolchain and
   traceable to a tag.
 
-**Grasshopper plugin — one section is worth a framework spike, nothing else.**
+**Grasshopper plugin - one section is worth a framework spike, nothing else.**
 The current C# 5/Mono build forces a hand-rolled WebSocket (`MiniWsClient`) and
 JSON (`Json.cs`). A modern target (`net48` with Roslyn, or `net7.0-windows`)
 could replace those with `ClientWebSocket` and `System.Text.Json`, and bring
@@ -325,7 +325,7 @@ review.
 2. **One validator per trust boundary.** Peer bytes, JSON values, section
    tables, attribute descriptors, and conversion inputs each have exactly one
    validation choke point. Everything below may assume validity.
-3. **Classified failure or visible warning — never silence.** A valid input that
+3. **Classified failure or visible warning - never silence.** A valid input that
    cannot be represented exactly produces a stage warning with a count. An
    invalid input produces a typed error with a protocol code.
 4. **Lifecycle symmetry is structural.** Registration/deregistration,
@@ -333,8 +333,8 @@ review.
    owner, not copies in each component/operator.
 5. **No unbounded waits, queues, heaps, or scans on the main thread.** Every
    loop has a deadline, a supersession check, or a bounded size.
-6. **Identity is stable.** Keys, uids, and document ids — never mutable object
-   names — identify stages, helpers, caches, definitions, and bake chains.
+6. **Identity is stable.** Keys, uids, and document ids - never mutable object
+   names - identify stages, helpers, caches, definitions, and bake chains.
 7. **UI and operators are adapters.** They read state and call engine/registry
    methods. They never orchestrate multi-step engine work or write RNA during
    draw.
@@ -351,7 +351,7 @@ review.
 
 ## 4. Workstreams
 
-### W0 — Baseline and guardrails (start immediately)
+### W0 - Baseline and guardrails (start immediately)
 
 - Baseline is green: 305 Blender tests, 57 core tests, C#/extension suites.
   Re-run and record it after every structural change.
@@ -374,7 +374,7 @@ side effects; no fixed ports or unbounded waits in the harness.
 
 ---
 
-### W1a — Geometry correctness (0.7.0 blocker)
+### W1a - Geometry correctness (0.7.0 blocker)
 
 - **Topology change:** replace the length-only check in `sections_to_mesh` with
   a real topology signature (vertex count, face counts, face indices). Rebuild
@@ -402,7 +402,7 @@ visible in `stage.warnings`.
 
 ---
 
-### W1b — Nested blocks and multi-part definitions (0.7.0, D1)
+### W1b - Nested blocks and multi-part definitions (0.7.0, D1)
 
 This is a protocol and both-halves workstream, not just a Blender fix.
 
@@ -451,7 +451,7 @@ console-test, and live-test levels; multi-part collections no longer collapse.
 
 ---
 
-### W2 — Trust boundaries: codecs and attributes (0.7.0 blocker)
+### W2 - Trust boundaries: codecs and attributes (0.7.0 blocker)
 
 - **Python decoder totality:** validate header type, version, section table
   shape, names, dtypes, byte counts, duplicate names, shape consistency;
@@ -481,7 +481,7 @@ on every fixture and the number corpus.
 
 ---
 
-### W3 — Lifecycle, ownership, concurrency (0.7.0 blocker)
+### W3 - Lifecycle, ownership, concurrency (0.7.0 blocker)
 
 **Grasshopper**
 
@@ -534,7 +534,7 @@ leak; a 1-hour churn soak is clean.
 
 ---
 
-### W4 — Remove the custom frame cache and the Live toggle (0.7.0, D2)
+### W4 - Remove the custom frame cache and the Live toggle (0.7.0, D2)
 
 Purpose: delete a whole subsystem whose complexity now outweighs its value.
 This is a deliberate simplification, not a bug fix.
@@ -580,7 +580,7 @@ semantics; the suite is smaller and faster; freeze/bake cover the offline path.
 
 ---
 
-### W5 — Bake dependents (0.7.0, D4)
+### W5 - Bake dependents (0.7.0, D4)
 
 Current code bakes the selected stage and freezes its **upstream** closure
 (ADR 0014). The owner decision adds the dependent side, with a deliberate limit:
@@ -642,7 +642,7 @@ state.
 
 ---
 
-### W6 — State, diagnostics, UI purity (0.7.0)
+### W6 - State, diagnostics, UI purity (0.7.0)
 
 - **State machine:** one state/transition table; `enabled` and `frozen` are
   flags, not states; `conflict` is explicit; illegal transitions fail tests.
@@ -667,7 +667,7 @@ tested; draw has no side effects.
 
 ---
 
-### W7 — Architecture seams (0.8.0)
+### W7 - Architecture seams (0.8.0)
 
 - **Grasshopper:** split `GhLink` into `StageRegistry`, `LinkConnection`,
   `RequestScheduler`, `ProtocolHandler`, `Publication`, `StageSlot`/`HeldFrame`;
@@ -696,7 +696,7 @@ direct tests; behavior unchanged except documented fixes.
 
 ---
 
-### W8 — Performance (0.8.0)
+### W8 - Performance (0.8.0)
 
 - **Gates:** `bench.py --check-baseline` compares p50/p95 per scenario to the
   stored JSON. **Fail over 5% on any metric.** A 0–5% regression is allowed
@@ -733,7 +733,7 @@ T10c verification below and [`performance-ledger.md`](performance-ledger.md).
 
 ---
 
-### W9 — Lean, legacy, docs, CI, framework (0.8.0)
+### W9 - Lean, legacy, docs, CI, framework (0.8.0)
 
 - **Delete dead code:** cache/live residue (W4); `params.clamp`/`ANIMATABLE`/
   `PARAM_TYPES`, `attributes.GROUPS`, duplicate `PROTOCOL_VERSION`,
@@ -777,7 +777,7 @@ same tree/toolchain; framework decision recorded.
 
 ---
 
-### W10 — Verification (continuous, completed in 0.8.0)
+### W10 - Verification (continuous, completed in 0.8.0)
 
 - **Regression rule:** every closed defect gets a test that fails before the fix.
 - **Fuzzing (T10a, done):** deterministic frame mutator (10k cases/language)
@@ -809,7 +809,7 @@ test is an incomplete fix.
 
 ## 5. Milestones
 
-### 0.7.0 — "No wrong data, no freeze, no leak, one cache fewer"
+### 0.7.0 - "No wrong data, no freeze, no leak, one cache fewer"
 
 **Status: shipped 2026-11-16.** W0, W1a, W1b, W2, W3, W4, W5, W6 and the
 0.7.0 regression tests from W10 are implemented through Q1–Q19 (Q5 merged into
@@ -835,7 +835,7 @@ fixtures; the installed extension round trip; `scripts/check-all` green in
   animation; removed cache fields ignored).
 - CHANGELOG, README, plan, protocol and ADRs describe the release accurately.
 
-### 0.8.0 — "Architecture, speed, truth"
+### 0.8.0 - "Architecture, speed, truth"
 
 Includes W7, W8, W9 and completes W10:
 
@@ -862,7 +862,7 @@ Includes W7, W8, W9 and completes W10:
 
 | Phase | Workstreams | Effort (dev-days) | Depends on |
 |---|---|---:|---|
-| A. Guardrails | W0 | 2–3 | — |
+| A. Guardrails | W0 | 2–3 | - |
 | B. Simplification | W4 (cache/live removal) | 3–5 | W0, D2 |
 | C. Correctness | W1a, W2 in parallel | 10–14 | W0, D1 |
 | D. Blocks | W1b | 5–7 | W2 grammar, W1a |
@@ -1206,7 +1206,7 @@ keep working without a coverage package.
   number is stable to one statement, not exact to the byte. The lowest files
   are `playback.py` 84.05%, `instances.py` 84.80% and `messages.py` 86.15%; no
   file is below the floor.
-- **C# Option A — measured, not an exception (floor 80%).** The machine has
+- **C# Option A - measured, not an exception (floor 80%).** The machine has
   no system `mono`/`mcs`/`monocov`/`dotnet` and no `sudo`; wine-mono supplies
   the compiler/runtime inside wine but no host executable or coverage tool. A
   Linux Mono 6.12.0.206-2 package (Arch `extra`, fetched from a mirror and
@@ -1310,7 +1310,7 @@ scripts/soak --duration 3600 --out benchmarks/results/2026-11-19-soak.json
 - **Guards.** A 60 s per-cycle deadline, a hard wall-clock guard, a bounded
   playback/bake wait (5 s per stage) and an outer `timeout(1)`; any wait,
   engine trace error or invariant failure exits non-zero.
-- **Result.** **PASS** — **10,238 cycles** in **3,600.2 s** of churn
+- **Result.** **PASS** - **10,238 cycles** in **3,600.2 s** of churn
   (**3,600.4 s** wall), **0 invariant failures**, **0 unclassified exceptions**
   and 0 engine errors. 10,238 stage adds/deletes, full/ref requests,
   stage/object renames, undo/redo handler passes, disable/enable cycles,
@@ -1556,9 +1556,9 @@ invariant it strengthens.
 | H35 | Publication O(components × stages) per solve | major | W8 |
 | H36 | Stage In rebuilds all geometry for refs | major | W8 |
 | H40–H44 | Lifecycle/instances/param/MiniWs/attribute tests absent | major | W10 |
-| T1 | Deploy script hardcodes a user | major | W9 — resolved T9a |
+| T1 | Deploy script hardcodes a user | major | W9 - resolved T9a |
 | T2 | Install-addon deletes a shared package | major | W9 |
-| T4 | Extension zip and `.gha` not reproducible | major | W9 — resolved T9a |
+| T4 | Extension zip and `.gha` not reproducible | major | W9 - resolved T9a |
 | T11 | Bench budgets 3–300× loose, no baseline | major | W8/W10 |
 | T18 | Test modules depend on import order | major | W0/W10 |
 | T24 | README claims Python 3.14 (Blender uses 3.13) | major | W9 |

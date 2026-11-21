@@ -16,7 +16,7 @@ copyright = ["2026 Miquel Oller"]
 # exclusively (Blender 5.2 has no Action.fcurves). Widening to 4.2 needs a
 # legacy fcurve path and a separate compatibility pass.
 blender_version_min = "5.2.0"
-website = "https://github.com/miscasquel/gh-blender-stack"
+website = "https://github.com/miscasquel/stageloom"
 tags = ["Geometry Nodes", "Pipeline", "Modeling"]
 
 # The official pure-Python wheel. Blender installs it into the extension's
