@@ -4,7 +4,7 @@ What this shows: a mesh object in Blender driven by a Grasshopper definition,
 as a stage in its modifier stack, with a parameter you can edit in Blender.
 
 ```
-Blender                                          Rhino 8 / Grasshopper
+Blender                                          Rhino 8/9 / Grasshopper
 ┌───────────────────────────┐   WebSocket   ┌───────────────────────────────┐
 │ Cube                      │◄─────────────►│ Stage In ──► Scale ──► Stage Out│
 │ Stageloom · Demo (stage)  │   59130       │                 ▲              │

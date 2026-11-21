@@ -14,7 +14,7 @@ played back.
 -->
 
 ```
-Blender                                          Rhino 8 / Grasshopper
+Blender                                          Rhino 8/9 / Grasshopper
 ┌───────────────────────────┐      WebSocket     ┌─────────────────────────────────┐
 │ Cube                      │◄──────────────────►│ Stage In ──► Scale ──► Stage Out│
 │ Stageloom · Demo (stage)  │       59130        │                 ▲               │
@@ -130,7 +130,7 @@ Download both artifacts from the
    localhost, so Blender requires it; with it off the panel says so and nothing
    listens.
 
-**2. Rhino 8 with Grasshopper**
+**2. Rhino 8 or 9 with Grasshopper**
 
 1. Download `Stageloom.gha`.
 2. Copy it into your Grasshopper `Libraries` folder
@@ -173,11 +173,12 @@ The add-on's logs live in its per-user extension data directory by default; the
   declares the `network` permission - it listens on localhost - so Blender's
   **Online Access** must be on
   (Preferences > System); with it off the panel says so and nothing listens.
-- **Rhino 8 with Grasshopper** to run real definitions. Stageloom has been used
-  natively on Windows 11 with Rhino 8 by the maintainer and an external user;
-  the project's own build and test environment runs Rhino under wine on Linux,
-  so the recorded acceptance matrix remains the Linux/wine one and 0.8.1 makes
-  no formal native-parity claim. macOS needs testing.
+- **Rhino 8 or 9 with Grasshopper** to run real definitions. Stageloom has
+  been used natively on Windows 11 with Rhino 8 and Rhino 9 by the maintainer,
+  and an external user has also run it natively; the project's own build and
+  test environment runs Rhino under wine on Linux, so the recorded acceptance
+  matrix remains the Linux/wine one and 0.8.1 makes no formal native-parity
+  claim. macOS needs testing.
 - The Grasshopper half is built from this same repository (`grasshopper/`,
   GPL-3.0-or-later), so no closed component is required.
 

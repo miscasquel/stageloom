@@ -36,10 +36,10 @@ in the stack, where it composes with native modifiers in either order.
 - Live playback: Play Every Frame waits for each stage; Freeze and the native
   Bake stage cover offline frames and rendering.
 
-A Grasshopper definition runs on the machine's own Rhino 8 install; without
+A Grasshopper definition runs on the machine's own Rhino 8 or 9 install; without
 Rhino, the bundled stand-in (`tools/fake_gh`) answers the loop so the add-on
 can be explored on its own. Requirements: Blender 5.2 or newer, Online Access
-enabled (the add-on listens on localhost), and Rhino 8 with Grasshopper for the
+enabled (the add-on listens on localhost), and Rhino 8 or 9 with Grasshopper for the
 Grasshopper half. GPL-3.0-or-later; source and issue tracker at
 https://github.com/miscasquel/stageloom.
 

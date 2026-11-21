@@ -8,7 +8,7 @@ stackable Blender modifiers, with geometry and parameters flowing both ways,
 animation and playback, live stages, and renderable native bakes.
 
 **0.8.0 status (2026-11-19).** T1–T11 are complete and 0.8.0 is released:
-<https://github.com/miscasquel/gh-blender-stack/releases/tag/v0.8.0>.
+<https://github.com/miscasquel/stageloom/releases/tag/v0.8.0>.
 Production is 25,083 physical / 20,072 code lines across 71 files, with 133
 core, **472** Blender headless and 689 C# checks plus the fixed-seed 10,000-case
 Python and C# frame fuzz campaigns. Coverage is measured at **93.50%** core
@@ -37,7 +37,7 @@ are generated from `protocol/sections.json` and drift-checked in CI
 ([ADR 0021](decisions/0021-generated-protocol-tables.md)).
 
 **0.8.1 status (2026-11-19).** 0.8.1 is a patch on the 0.8.0 tree, released
-at <https://github.com/miscasquel/gh-blender-stack/releases/tag/v0.8.1>. The
+at <https://github.com/miscasquel/stageloom/releases/tag/v0.8.1>. The
 fix commits are `b923398` (print Blender's native crash log from the headless
 runner) and `e2cafed` (snapshot the bake-token matches before unfreezing, so
 Clear Bake survives a deleted stack object; write the fake-GH report
@@ -56,8 +56,13 @@ snapshot). The release assets are `dist/stageloom-0.8.1.zip` (SHA-256
 reproduced byte-for-byte, the extension was installed and enabled with the
 round trip passing, and `scripts/check-deployed` reports the deployed plugin
 current. The wire protocol, the fourteen fixtures and `out_hash` are unchanged;
-there is no `.blend` migration. Native Windows/Rhino acceptance remains
-deferred, and 0.8.1 makes no native-parity claim.
+there is no `.blend` migration.
+
+**Native field use (2026-11-21).** The maintainer has run the plugin natively on
+Windows 11 with Rhino 8 and Rhino 9, and an external user has also run it
+natively. The recorded acceptance matrix remains the Linux/wine one, so 0.8.1
+makes no formal native-parity claim; A11 in §7 is still the gate that closes
+this.
 
 **Authority:** this document is the roadmap for 1.0. The wire contract is
 [`protocol.md`](protocol.md); architecture decisions are in
@@ -123,7 +128,7 @@ target; preview off is within noise. See
 
 | Gap | Why it blocks 1.0 |
 |---|---|
-| No native Windows Rhino acceptance run | Wine is a development environment, not the target user platform. Native acceptance is deferred beyond the 0.8 series; neither 0.8.0 nor 0.8.1 makes a native-parity claim. |
+| No recorded native Windows Rhino acceptance matrix | Wine is the development environment, not the target user platform. The maintainer has run the plugin natively on Windows 11 with Rhino 8 and Rhino 9, and an external user has run it natively too, but the recorded matrix is still the Linux/wine one; neither 0.8.0 nor 0.8.1 makes a formal native-parity claim. |
 | No GH component migration | Old documents keep old parameter/output lists and never gain newer capabilities. |
 | No chain-level Windows/Rhino playback/bake proof | Bake stage freezes the upstream chain and triggers plus freezes downstream dependents (ADR 0015); the 0.7.0 acceptance is headless, so a Windows/Rhino chain render is still missing. |
 | Release verification is manual and single-machine | The extension zip and `.gha` are reproducible for the same tree/toolchain and checked, but the C# suite, `.gha` check and full platform matrix remain a local/release gate rather than a stock-runner CI claim. |
@@ -136,6 +141,7 @@ target; preview off is within noise. See
 
 - Windows 11 x64
 - Rhino 8 with Grasshopper 1
+- Rhino 9 with Grasshopper 1
 - Blender 5.3
 
 **Tier 2 - supported add-on, no Rhino on the same OS**
@@ -146,8 +152,8 @@ target; preview off is within noise. See
 
 **Not supported in 1.0**
 
-- Rhino 9 / Grasshopper 2
-- Rhino 8 on macOS (revisit after Windows parity; decide and record)
+- Grasshopper 2, including the GH2 runtime in Rhino 9
+- Rhino 8 and Rhino 9 on macOS (revisit after Windows parity; decide and record)
 - Blender versions below 5.2 (the parameter UI uses the layered-action API)
 - Remote or non-loopback connections
 
@@ -175,8 +181,8 @@ floor.
 - Returning curve attributes to Blender (the legacy Curve helper cannot store
   them).
 - Native B-rep/surface transfer; Breps remain a warned, lossy mesh conversion.
-- Grasshopper 2 / Rhino 9 support; out of scope through 1.0, with no separate
-  plan carried in this repository.
+- Grasshopper 2, including the GH2 runtime in Rhino 9; out of scope through
+  1.0, with no separate plan carried in this repository.
 - A .NET framework migration (`net48`/`net7.0-windows`): C# 5/Mono and the
   hand-written MiniWs/JSON transport remain through 1.0, and the spike is a
   recorded no-go ([ADR 0019](decisions/0019-keep-csharp5-mono.md)); revisit it
@@ -232,7 +238,8 @@ reproducible from the scripted harness.
 
 **Work**
 
-- Run the full acceptance matrix on Windows 11 with Rhino 8 and Blender 5.3.
+- Run the full acceptance matrix on Windows 11 with Rhino 8, Rhino 9 and
+  Blender 5.3.
 - Build the `.gha` on Windows as well as under wine; verify the deployed copy and
   the Rhino restart path.
 - Test the Blender add-on on Windows: extension install, data root, paths,
@@ -381,8 +388,8 @@ The old A1–A10 remain the functional core. Add the release gates that the
   session identities, groups, helpers and animation; a saved or undone shared key
   shows the explicit `conflict` state and sends/applies nothing for the affected
   stages instead of silently splitting them.
-- **A11 Platform.** Windows 11 + Rhino 8 + Blender 5.3 passes the full matrix;
-  the Linux/wine development matrix remains green.
+- **A11 Platform.** Windows 11 + Rhino 8 and Rhino 9 + Blender 5.3 passes the
+  full matrix; the Linux/wine development matrix remains green.
 - **A12 Chain playback/bake.** Multi-stage Play Every Frame works, and a
   multi-stage bake renders with Grasshopper closed and restores live behavior
   with Clear Bake. The headless chain is green in 0.7.0; the Windows/Rhino
@@ -436,10 +443,10 @@ The old A1–A10 remain the functional core. Add the release gates that the
 
 **Decisions to confirm**
 
-1. Is macOS Rhino 8 in the 1.0 support matrix, or explicitly out?
+1. Is macOS Rhino 8 or Rhino 9 in the 1.0 support matrix, or explicitly out?
 2. Is extensions.blender.org a 1.0 requirement or a post-1.0 distribution step?
 3. Is Yak packaging for the `.gha` required for 1.0?
-4. Does 1.0 ship Rhino 8/GH1 only, with GH2 in a later release?
+4. Does 1.0 ship Rhino 8 and Rhino 9 with GH1, with GH2 in a later release?
 5. Is the 0.7 native-bake scope (only the selected stage is baked; downstream
    dependents are frozen on one frame each) enough for animation-heavy 1.0
    chains, or does 1.0 need a chain-level bake? (The custom frame cache is gone;

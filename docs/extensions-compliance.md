@@ -30,7 +30,7 @@ continues in [`plan.md`](plan.md). Release history is in
 | Wine deploy path | **Closed** | `grasshopper/deploy/deploy.sh` derives the user under `$WINEPREFIX/drive_c/users` (`STAGELOOM_WINE_USER` override, `Public` skipped, zero/multiple users fail); no hardcoded user |
 | Listing assets/support | **Deferred** | icon in `docs/listing/`; screenshots pending for a later upload; support URL is listing metadata |
 | Platform upload | **Deferred** | v0.8.1 ships on GitHub first; the 1.0 plan owns the platform decision |
-| Windows-native acceptance | **Deferred beyond 0.8** | no native-parity claim for 0.8.1; tracked in [`plan.md`](plan.md) §5B |
+| Windows-native acceptance | **Informal only** | natively used on Windows 11 with Rhino 8 and Rhino 9 by the maintainer, and by an external user; the recorded acceptance matrix is still the Linux/wine one and 0.8.1 makes no formal native-parity claim; tracked in [`plan.md`](plan.md) §5B |
 | .NET framework migration | **No-go through 1.0** | C# 5/Mono and MiniWs/Json stay; [ADR 0019](decisions/0019-keep-csharp5-mono.md) |
 | CI release gate | **Open for 1.0** | tracked in [`plan.md`](plan.md) §5F; CI runs core/Blender/extension/zip reproducibility, not the reference-machine benchmark, local-only C# or the local `.gha` check |
 
@@ -249,7 +249,7 @@ physical / 20,076 code lines across 71 files (+8 / +4 for the bake-token
 snapshot).
 
 0.8.1 is published at
-<https://github.com/miscasquel/gh-blender-stack/releases/tag/v0.8.1>. Native
+<https://github.com/miscasquel/stageloom/releases/tag/v0.8.1>. Native
 Windows/Rhino acceptance remains **deferred**, and 0.8.1 makes no native-parity
 claim. The prep subagent made no commit, tag or push; the orchestrator published
 the audited tree. `v0.8.0` at `e6ea18e` is untouched.
